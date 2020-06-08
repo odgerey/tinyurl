@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/odgerey/tinyurl/issues"
   },
-  "homepage": "https://github.com/odgerey/tinyurl#readme"
+  "homepage": "https://github.com/odgerey/tinyurl#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
