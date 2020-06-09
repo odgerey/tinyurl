@@ -20,6 +20,7 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
+// res.json = json.stringify(object) + res.send
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
@@ -42,12 +43,6 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-app.post("/urls/:shortURL/delete", (req, res) => {
-  delete urlDatabase[req.params.shortURL]
-  res.redirect("/urls")
-})
-
-
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   if (longURL){
@@ -58,11 +53,20 @@ app.get("/u/:shortURL", (req, res) => {
   }
 });
 
+app.post("/urls/:shortURL", (req, res) => {
+  const urltoUpdate =  req.params.shortURL;
+  let newLongURL = req.body.longURL;
+  urlDatabase[urltoUpdate] = newLongURL; 
+  res.redirect("/urls");
+});
 
-// app.post('/', function (req, res) {
-//   res.send('POST request to the homepage')
-// })
-// save to the url database
+
+app.post("/urls/:shortURL/delete", (req, res) => {
+  delete urlDatabase[req.params.shortURL]
+  res.redirect("/urls")
+})
+
+
 
 
 app.post("/urls", (req, res) => {
