@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
-
 app.set("view engine", "ejs");
 
 
@@ -43,6 +42,12 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+app.post("/urls/:shortURL/delete", (req, res) => {
+  delete urlDatabase[req.params.shortURL]
+  res.redirect("/urls")
+})
+
+
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   if (longURL){
@@ -58,11 +63,15 @@ app.get("/u/:shortURL", (req, res) => {
 //   res.send('POST request to the homepage')
 // })
 // save to the url database
+
+
 app.post("/urls", (req, res) => {
   const tiny = generateRandomString() 
   urlDatabase[tiny] = req.body.longURL
   res.redirect(`/urls/${tiny}`)  // Respond with 'Ok' (we will replace this)
 });
+
+
 
 
 app.listen(PORT, () => {
