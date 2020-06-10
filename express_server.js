@@ -33,7 +33,6 @@ const userDatabase = {
 
 const findUserByEmail = function (email) {
 for (let uniqueUser in userDatabase) {
-  console.log("Inside uniqueUser:", userDatabase[uniqueUser])
   if (userDatabase[uniqueUser].email === email) {
     return userDatabase[uniqueUser];
   }
@@ -117,15 +116,16 @@ app.get("/register", (req, res) => {
 app.post ("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  console.log("Inside register:", req.body);
-  console.log(req.body.password);
   const user = findUserByEmail(email);
-  console.log(user)
+  if (!req.body.email || !req.body.password){
+    res.status(404).send("You didn't insert any fields")
+  }
+
   if (!user) {
     const userId = createNewUser(email, password);
     res.cookie('user_id', userId);
     res.redirect("/urls");
-  } else {
+  } else{
     res.status(403).send('Oups! It seems you are already registered.')
   }
 });
@@ -136,9 +136,9 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-// console.log(req.body)
-  res.cookie("user_id", req.body.email);
-  res.redirect("/urls")
+ console.log(req.body)
+  // res.cookie("user_id", req.body.email);
+  // res.redirect("/urls")
 })
 
 

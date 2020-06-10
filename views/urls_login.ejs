@@ -1,1 +1,34 @@
-console.log("OH CRAP, PAGE NOT DONE")
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <title>URL - TinyApp Example</title>
+</head>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<body>
+  <%- include("partials/_header.ejs") %>
+  <div style= "text-align:center">
+    <h1>Log In</h1>
+    <h4>Already a member? Well step right in. </h4>
+    <img src="https://specials-images.forbesimg.com/imageserve/1152308114/960x0.jpg?fit=scale" width="250" height="175">
+    <p style="background-color:darkseagreen"><b>TinyURL</b> is a free url shortener app with an easy designed. <br>You can store your short & long URLS and access them whenever you need them by simply logging back in. </br>
+       We run on coffee and comments, so feel free to get in touch!</p>
+  </div>
+<form action="/register" method="POST" style="margin: 8em" >
+  <div class="form-group">
+    <h4>Enter below to access your account:</h4>
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</body>

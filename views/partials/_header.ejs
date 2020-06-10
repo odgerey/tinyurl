@@ -14,19 +14,5 @@
         <a class="nav-item nav-link" href="/login">Log In </a>
       </div>
     </div>
-
-    <% if (!userId) { %>
-        <form class="form-inline" action="/login" method="POST">
-            <label class="nav-item" for="username" style="margin: auto">User connection</label>
-            <input class="form-control" type="text" name="email" style="margin: 13px" placeholder="Email here">
-            <button type="submit" class="btn btn-primary"> Login</button>
-        </form>
-
-    <% } else { %>
-       <form class="form-inline" action="/logout" method="POST">
-          <label>Logged in as <%= userId %> </label>
-          <button type="submit" class="btn btn-primary"> Logout</button>
-       </form>
-    <% } %>
   </nav>
 </header>
