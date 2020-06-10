@@ -32,15 +32,16 @@ const userDatabase = {
 };
 
 const findUserByEmail = function (email) {
-for (let uniqueUser of userDatabase) {
+for (let uniqueUser in userDatabase) {
+  console.log("Inside uniqueUser:", userDatabase[uniqueUser])
   if (userDatabase[uniqueUser].email === email) {
-    return usersDatabase[uniqueUser];
+    return userDatabase[uniqueUser];
   }
 }
 return false; 
 };
 
-const createNewUser = function (name, email, password) {
+const createNewUser = function (email, password) {
   const userId = generateRandomId();
   const newUser = {
     id: userId, 
@@ -116,24 +117,26 @@ app.get("/register", (req, res) => {
 app.post ("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
- 
+  console.log("Inside register:", req.body);
+  console.log(req.body.password);
   const user = findUserByEmail(email);
+  console.log(user)
   if (!user) {
-    const userId = createNewUser(name, email, password);
+    const userId = createNewUser(email, password);
     res.cookie('user_id', userId);
     res.redirect("/urls");
   } else {
     res.status(403).send('Oups! It seems you are already registered.')
-    setTimeout(function(){
-      res.redirect("/urls")
-    }, 10000);
   }
 });
 
+app.get("/login", (req, res) => {
+  let templateVars = { currentUser: null }
+  res.render('urls_login', templateVars);
+});
+
 app.post("/login", (req, res) => {
-//const loggedInUser = userDatabase[userId];
-//WHY IS REQ.BODY.USERNAME STILL AN OBJECT
-console.log(req.body)
+// console.log(req.body)
   res.cookie("user_id", req.body.email);
   res.redirect("/urls")
 })
@@ -160,9 +163,8 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 app.post("/urls", (req, res) => {
   const tiny = generateRandomString() 
   urlDatabase[tiny] = req.body.longURL
-  res.redirect(`/urls/${tiny}`)  // Respond with 'Ok' (we will replace this)
+  res.redirect(`/urls/${tiny}`)  
 });
-
 
 
 

@@ -11,13 +11,14 @@
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
         <a class="nav-item nav-link" href="/register">Register</a>
+        <a class="nav-item nav-link" href="/login">Log In </a>
       </div>
     </div>
 
     <% if (!userId) { %>
         <form class="form-inline" action="/login" method="POST">
             <label class="nav-item" for="username" style="margin: auto">User connection</label>
-            <input class="form-control" type="text" name="username" style="margin: 13px" placeholder="@Username here">
+            <input class="form-control" type="text" name="email" style="margin: 13px" placeholder="Email here">
             <button type="submit" class="btn btn-primary"> Login</button>
         </form>
 
