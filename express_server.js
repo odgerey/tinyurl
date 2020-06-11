@@ -4,6 +4,11 @@ const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser')
 
+//Express extensions used by my APP 
+app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
+app.use(cookieParser())
+
 //Generates the Short URL unique ID
 function generateRandomString() {
 return Math.random().toString(36).substring(7)
@@ -22,12 +27,12 @@ const userDatabase = {
   "userRandomID": {
     id: "userRandomID", 
     email: "user@example.com", 
-    password: "purple-monkey-dinosaur"
+    password: "purple-monkey-dinosaur" //bcrypt.hashSync('purple..' , saltRounds)
   },
  "user2RandomID": {
     id: "user2RandomID", 
     email: "user2@example.com", 
-    password: "dishwasher-funk"
+    password: "dishwasher-funk" // same as above
   }
 };
 
@@ -45,16 +50,22 @@ const createNewUser = function (email, password) {
   const newUser = {
     id: userId, 
     email,
-    password,
+    password, // bcrypt.hashSync(password, saltRounds)..go ajust authenticateUser
   };
   userDatabase[userId] = newUser;
   return userId
 };
 
-//Express extensions used by my APP 
-app.use(bodyParser.urlencoded({extended: true}));
-app.set("view engine", "ejs");
-app.use(cookieParser())
+const authenticateUser = (email, password) => {
+  const user = findUserByEmail(email);
+  if (user && user.password === password) { //if (user && bcrypt.compareSync(password, user.password){
+    return user;
+  } else {
+    return false;
+  }
+}
+
+//const currentUser = userDatabase[userId]; 
 
 //Not needed
 app.get("/", (req, res) => {
@@ -73,25 +84,31 @@ app.get("/urls.json", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
+  const userId = req.cookies["user_id"]
   let templateVars = { 
-    userId: req.cookies["user_id"],
+    user: userDatabase[userId], //
+    userId,
     urls: urlDatabase 
-  };
+  }; 
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
+  const userId = req.cookies["user_id"]
   let templateVars = {
-    userId: req.cookies["user_id"]
+    user: userDatabase[userId], 
+    userId,
   }
   res.render("urls_new", templateVars);
 });
 
 app.get("/urls/:shortURL", (req, res) => {
+  const userId = req.cookies["user_id"]
   let templateVars = { 
-    userId: req.cookies["user_id"],
+    user: userDatabase[userId], 
+    userId,
     shortURL: req.params.shortURL, 
-    longURL: urlDatabase[req.params.shortURL]};
+    longURL: urlDatabase[req.params.shortURL]}
   res.render("urls_show", templateVars);
 });
 
@@ -106,19 +123,18 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  let templateVars = {
-    userId: req.cookies["user_id"]
-  }
-  res.render("urls_registration", templateVars);
+const userId = req.cookies["user_id"]
+let templateVars = { user: null}  
+res.render("urls_registration", templateVars);
 });
 
-//WHY IS IT GENERATING A NEW STRING INTO THE SHORT STRING
+
 app.post ("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const user = findUserByEmail(email);
   if (!req.body.email || !req.body.password){
-    res.status(404).send("You didn't insert any fields")
+    res.status(404).send("You must fill the form")
   }
 
   if (!user) {
@@ -131,14 +147,23 @@ app.post ("/register", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  let templateVars = { currentUser: null }
+  const userId = req.cookies["user_id"]
+  let templateVars = { user: null} // =============> EDUCATED ASSUMPTION
   res.render('urls_login', templateVars);
 });
 
+
 app.post("/login", (req, res) => {
- console.log(req.body)
-  // res.cookie("user_id", req.body.email);
-  // res.redirect("/urls")
+ const email = req.body.email;
+ const password = req.body.password;
+ const user = authenticateUser(email, password);
+
+ if (user) {
+  res.cookie("user_id", user.id)
+  res.redirect("/urls");
+ } else {
+  res.status(401).send("Oups! We think you may have the wrong credentials. Try logging in again.")
+ }
 })
 
 
@@ -165,7 +190,6 @@ app.post("/urls", (req, res) => {
   urlDatabase[tiny] = req.body.longURL
   res.redirect(`/urls/${tiny}`)  
 });
-
 
 
 app.listen(PORT, () => {

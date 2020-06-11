@@ -10,9 +10,22 @@
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
-        <a class="nav-item nav-link" href="/register">Register</a>
-        <a class="nav-item nav-link" href="/login">Log In </a>
       </div>
     </div>
+
+    <div class="navbar nav" id="navbarNavAltMarkup">
+      <% if(user) {%>
+      </div>  
+      <form class="form-inline" action="/logout" method="POST">
+         <label>Logged in as <%= user.email %> </label>
+         <button type="submit" class="btn btn-primary"> Logout</button>
+      </form>
+   </div>
+    <% } else { %>
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="/register">Register</a>
+        <a class="nav-item nav-link" href="/login">Log In </a>
+      </div>  
+    <% } %>
   </nav>
 </header>
