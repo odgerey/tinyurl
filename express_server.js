@@ -24,8 +24,6 @@ function generateRandomId() {
 
 
 
-
-
 const urlDatabase = {
   b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
   i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" } //compare userID cookies compared to USerID from this object
@@ -85,7 +83,6 @@ const authenticateUser = (email, password) => {
 
 
 
-
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -107,18 +104,35 @@ app.get("/urls.json", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  const userId = req.cookies["user_id"]  
-  let templateVars = { 
-    user: userDatabase[userId], // FILTER STATEMENT ....OBJECT.keys(urlDatabase).filter 
-    userId,
-    urls: urlDatabase 
-  }; 
   
+  const urlsForUser= function (mySpecificUser) {
+    let userURLS = {};  // ===================================>START HERE
+    for (let shortURL in urlDatabase) {
+      if (urlDatabase[shortURL].userID === mySpecificUser) {
+        userURLS[shortURL] = urlDatabase[shortURL];
+      }
+    }
+    return userURLS;
+  }
+
+  
+  const userId = req.cookies["user_id"]  
+  let userURLS = urlsForUser(req.cookies["user_id"]);
+  let templateVars = { 
+    urls: userURLS,
+    user: userDatabase[userId], 
+    userId,
+  }; 
   if (!userId) {
   res.render("urls_registration", templateVars)
   } else {
   res.render("urls_index", templateVars); 
   }
+
+
+  //const result = Object.keys(urlDatabase).filter( => userId === templateVars.user);
+  //console.log("The database after filter:", urlDatabase)
+  //console.log
 });
 
 app.get("/urls/new", (req, res) => {
@@ -128,7 +142,8 @@ app.get("/urls/new", (req, res) => {
     userId,
   }
   if (!userId) {
-    res.status(404).send("Sorry, you must be logged in to use this feature.")
+  //  res.status(404).send("Sorry, you must be logged in to use this feature.")
+   res.redirect("/errors") //===================> HERE CHANGES
   } else {
   res.render("urls_new", templateVars);
   }
@@ -142,7 +157,11 @@ app.get("/urls/:shortURL", (req, res) => {
     shortURL: req.params.shortURL, 
     longURL: urlDatabase[req.params.shortURL].longURL
   }
+  if (!userId){
+    res.redirect("/errors") 
+  } else { 
   res.render("urls_show", templateVars);
+  }
 });
 
 app.get("/u/:shortURL", (req, res) => {
@@ -151,11 +170,17 @@ app.get("/u/:shortURL", (req, res) => {
   if (longURL){
   res.redirect(longURL); 
   } else {
-    res.status(404);
+    //res.status(404);
+    res.redirect("/errors")
     res.end();
   }
 });
 
+app.get("/errors", (req, res) => {
+  const userId = req.cookies["user_id"]
+  let templateVars = { user: null} // 
+  res.render("urls_errors", templateVars ) // ====================> HERE CHANGES
+})
 
 
 
@@ -176,7 +201,8 @@ app.post ("/register", (req, res) => {
   const password = req.body.password;
   const user = findUserByEmail(email);
   if (!req.body.email || !req.body.password){
-    res.status(404).send("You must fill the form.")
+    //res.status(404).send("You must fill the form.")
+    res.redirect("/errors")
   }
 
   if (!user) {
@@ -184,7 +210,8 @@ app.post ("/register", (req, res) => {
     res.cookie('user_id', userId);
     res.redirect("/urls");
   } else{
-    res.status(403).send('Oups! It seems you are already registered.')
+    //res.status(403).send('Oups! It seems you are already registered.')
+    res.redirect("/errors")
   }
 });
 
@@ -204,7 +231,8 @@ app.post("/login", (req, res) => {
   res.cookie("user_id", user.id)
   res.redirect("/urls");
  } else {
-  res.status(401).send("Oups! We think you may have the wrong credentials. Try logging in again.")
+  res.redirect("/errors")
+  // res.status(401).send("Oups! We think you may have the wrong credentials. Try logging in again.")
  }
 })
 
@@ -212,6 +240,7 @@ app.post("/login", (req, res) => {
 app.post("/logout", (req, res) => {
   res.clearCookie("user_id");
   res.redirect("/urls")
+  //console.log("user_id")
 })
 
 
@@ -233,8 +262,13 @@ app.post("/urls/:shortURL", (req, res) => {
 });
 
 app.post("/urls/:shortURL/delete", (req, res) => {
+  const userId = req.cookies["user_id"]
+  if (!userId){
+    res.redirect("/errors")
+  } else {
   delete urlDatabase[req.params.shortURL]
   res.redirect("/urls")
+  }
 })
 
 
