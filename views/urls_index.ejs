@@ -30,7 +30,7 @@
         <% for(let url in urls) { %>
           <tr>
             <td><%= url %></td>
-            <td><%= urls[url] %></td>
+            <td><%= urls[url].longURL %></td>
             <td> 
                 <a form="nav-item nav-link" href="/urls/<%= url %>">
                 <button type="submit" class="btn btn-danger" style="margin:auto" >Edit</button>
