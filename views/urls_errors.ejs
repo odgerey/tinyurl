@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <title>New URL - TinyApp Example</title>
+  </head>
+
+  <body>
+    <%- include('partials/_header.ejs') %>
+    <div class="card" style="width: 80rem; margin-block-start:10; text-align: center;">
+      <div class="card-body"><h1 class="card-title">Oups! There seems to be a mistake.</h1>
+        <h6 class="card-subtitle mb-2 text-muted">No worries, we're here to help!<br>We'll redirect you to the right page.</br></h6>
+        <p class="card-text"><h5>Did you want to create an account?</h5>
+          <br><a href="/register" class="card-link"><button type="button;" class="btn btn-primary">I want an account!</button></a></br>
+          <br><h5>Already a user?</h5></br><a href="/login" class="card-link"><button type="button;" class="btn btn-primary">I'm a user!</button></a>
+        </p>
+      </div>
+    </div>
+  </body>

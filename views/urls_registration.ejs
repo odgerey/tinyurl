@@ -13,12 +13,16 @@
   <%- include("partials/_header.ejs") %>
   <div style= "text-align:center;" class="form-group">
     <h1>Create an account</h1>
-    <h4>Who we are:</h4>
+    <h6>Have an account?</h6>
+    <a href="/login" class="card-link"><button type="button;" class="btn btn-primary">Log In</button></a>
+    <h3><b>Welcome!</b></h3>
+    <h5 > Who we are:</h5>
     <img src="https://specials-images.forbesimg.com/imageserve/1152308114/960x0.jpg?fit=scale" width="250" height="175">
-    <p style="background-color:darkseagreen; background-origin: padding-box: 8em"><b>TinyURL</b> is a free url shortener app with an easy designed. <br>You can store your short & long URLS and access them whenever you need them by simply logging back in. </br>
-       We run on coffee and comments, so feel free to get in touch!</p>
-    </div>
-<form action="/register" method="POST" style="margin: 8em" >
+    <p style="background-color:darkseagreen;"><b>TinyURL</b> is a free url shortener app with an easy designed. <br>You can store your short & long URLS and access them whenever you need them by simply logging back in. </br>
+       We run on coffee and comments, so feel free to get in touch!
+    </p>
+  </div>
+  <form action="/register" method="POST" style="margin: 8em" >
   <div class="form-group">
     <h4>Fill below to access our super cool features:</h4>
     <label for="exampleInputEmail1">Email address</label>
@@ -30,5 +34,5 @@
     <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
   </div>
   <button type="submit" class="btn btn-primary">Create my account</button>
-</form>
+  </form>
 </body>
