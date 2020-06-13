@@ -4,10 +4,10 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-!["Full edit feature"](t.ly/M7vk)
-!["Main user's account page with edit and delete features"](t.ly/upRA)
-!["New user welcome page"](t.ly/ffiz)
-!["Dynamic errors page for customer experience"](t.ly/ecai)
+!["Full edit feature"](https://github.com/odgerey/tinyurl/blob/master/docs/urls_editFeature.png)
+!["Main user's account page with edit and delete features"](https://github.com/odgerey/tinyurl/blob/master/docs/urls_index.png)
+!["New user welcome page"](https://github.com/odgerey/tinyurl/blob/master/docs/urls_register.png)
+!["Dynamic errors page for customer experience"](https://github.com/odgerey/tinyurl/blob/master/docs/urls_errors.png)
 ## Dependencies
 
 - Node.js
