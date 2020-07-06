@@ -10,7 +10,10 @@
   <%- include("partials/_header.ejs") %>
   <div class="card text-center">
       <div class="card-header"></div>
-      <div class="card-body"></div>
+      <div class="card-body">
+        <h1 class="title">TinyURL for: <%= longURL %></h1>
+        <h4 class="card-text">Short URL: <a class="text-reset" href="/u/<%= shortURL %>"><%= shortURL %></a></h4>
+      </div>
       <div style="margin: 1em;">
         <h3>Edit</h3>
         <h6>*You must resubmit a new URL link</h6>
